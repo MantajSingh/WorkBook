@@ -1,0 +1,186 @@
+/// enable i2s if i2s is the outputcard
+
+/////////////////////test the speaker add the default card fist////////////////////////////// 
+
+Fix: set the default card
+
+Since HDMI worked on hw:2,0 before, create this file:
+
+////////////install for online audio stream 
+sudo apt install ffmpeg
+
+//edit the file to make the defauld output si the c dont have to.
+nano ~/.asoundrc
+
+Put this in it:
+
+pcm.!default {
+    type plug
+    slave.pcm "hw:2,0"
+}
+
+ctl.!default {
+    type hw
+    card 2
+}
+
+Save, then test:
+
+speaker-test -c 2 -t wav
+
+Then try:
+
+ffplay -nodisp https://ice5.somafm.com/groovesalad-128-mp3
+
+
+//////////////////////////////////////////////////////////
+
+sudo nano /boot/firmware/config.txt
+# Raspberry Pi OS newer path.
+
+Alternative older path:
+sudo nano /boot/config.txt
+# Raspberry Pi OS older path.
+
+View current config:
+grep -v '^#' /boot/firmware/config.txt | sed '/^$/d'
+# Show non-comment active lines only.
+
+Important common config lines:
+dtparam=i2c_arm=on
+# Enable I2C.
+
+dtparam=spi=on
+# Enable SPI.
+
+dtoverlay=hifiberry-dac
+# Example I2S DAC overlay.
+
+dtoverlay=i2s-mmap
+# Example depending on use case/OS.
+
+dtparam=audio=off
+# Disable onboard audio if using external DAC overlay and needed.
+
+Reboot after config change:
+sudo reboot
+# Apply changes.
+
+
+24) CHECK I2S / AUDIO INTERFACE
+--------------------------------------------------------------------
+# I2S usually appears through the audio driver/overlay rather than a simple /dev/i2s file.
+# Typical checks are:
+
+aplay -l
+# See if I2S sound card appears.
+
+cat /proc/asound/cards
+# Confirm ALSA sees the I2S audio card.
+
+dmesg | grep -i -e i2s -e asoc -e snd
+# Look for I2S / ASoC / sound driver messages.
+
+grep -i "dtoverlay\|dtparam" /boot/firmware/config.txt
+# Check Pi overlay/audio settings.
+
+
+///check the cards attach to the ALSA 
+aplay -l
+
+
+///creat the .c file
+sudo nano main.c 
+
+
+///write the C code to play beep on the selected card in int main to connect with ALSA
+
+#include <stdio.h>
+#include <math.h>
+#include <alsa/asoundlib.h>
+
+#define SAMPLE_RATE 48000
+#define CHANNELS 2
+#define FRAMES 256
+#define DURATION_SEC 3
+#define FREQ 440.0
+
+int main(void)
+{
+    snd_pcm_t *handle;
+    snd_pcm_hw_params_t *params;
+    unsigned int rate = SAMPLE_RATE;
+    int dir = 0;
+    int rc;
+
+    rc = snd_pcm_open(&handle, "hw:2,0", SND_PCM_STREAM_PLAYBACK, 0);
+    if (rc < 0) {
+        fprintf(stderr, "Unable to open audio device: %s\n", snd_strerror(rc));
+        return 1;
+    }
+
+    snd_pcm_hw_params_malloc(&params);
+    snd_pcm_hw_params_any(handle, params);
+    snd_pcm_hw_params_set_access(handle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
+    snd_pcm_hw_params_set_format(handle, params, SND_PCM_FORMAT_S16_LE);
+    snd_pcm_hw_params_set_channels(handle, params, CHANNELS);
+    snd_pcm_hw_params_set_rate_near(handle, params, &rate, &dir);
+
+    snd_pcm_uframes_t frames = FRAMES;
+    snd_pcm_hw_params_set_period_size_near(handle, params, &frames, &dir);
+
+    rc = snd_pcm_hw_params(handle, params);
+    snd_pcm_hw_params_free(params);
+
+    if (rc < 0) {
+        fprintf(stderr, "Unable to set hardware parameters: %s\n", snd_strerror(rc));
+        snd_pcm_close(handle);
+        return 1;
+    }
+
+    rc = snd_pcm_prepare(handle);
+    if (rc < 0) {
+        fprintf(stderr, "Unable to prepare audio device: %s\n", snd_strerror(rc));
+        snd_pcm_close(handle);
+        return 1;
+    }
+
+    short buffer[FRAMES * CHANNELS];
+    int loops = (SAMPLE_RATE * DURATION_SEC) / FRAMES;
+
+    for (int i = 0; i < loops; i++) {
+        for (int j = 0; j < FRAMES; j++) {
+            double t = (double)(i * FRAMES + j) / SAMPLE_RATE;
+            short sample = (short)(12000.0 * sin(2.0 * M_PI * FREQ * t));
+            buffer[j * 2] = sample;
+            buffer[j * 2 + 1] = sample;
+        }
+
+        rc = snd_pcm_writei(handle, buffer, FRAMES);
+        if (rc == -EPIPE) {
+            snd_pcm_prepare(handle);
+        } else if (rc < 0) {
+            fprintf(stderr, "Write error: %s\n", snd_strerror(rc));
+            break;
+        }
+    }
+
+    snd_pcm_drain(handle);
+    snd_pcm_close(handle);
+
+    printf("Done playing tone\n");
+    return 0;
+}
+
+
+//////compile the with gcc 
+gcc main.c -o app -lasound -lm
+
+////run the output app
+./app
+
+/////if error propable install esentials
+sudo apt install -y libasound2-dev build-essential
+ 
+
+

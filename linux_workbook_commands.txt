@@ -1,0 +1,950 @@
+LINUX PROJECT WORKBOOK
+======================
+A practical command workbook for Linux development.
+Most examples assume Debian/Ubuntu-style Linux. Raspberry Pi-specific commands are marked.
+
+--------------------------------------------------------------------
+1) BASIC NAVIGATION
+--------------------------------------------------------------------
+pwd
+# Print current working directory.
+
+ls
+# List files in current directory.
+
+ls -l
+# Long listing: permissions, owner, size, date.
+
+ls -la
+# Long listing including hidden files.
+
+ls -lh
+# Human-readable sizes.
+
+cd /path/to/folder
+# Change to a specific directory.
+
+cd ..
+# Go one level up.
+
+cd ~
+# Go to home directory.
+
+cd -
+# Go back to previous directory.
+
+clear
+# Clear terminal screen.
+
+history
+# Show previously used commands.
+
+history | tail -50
+# Show last 50 commands.
+
+--------------------------------------------------------------------
+2) CREATE, COPY, MOVE, DELETE FILES AND FOLDERS
+--------------------------------------------------------------------
+touch file.txt
+# Create an empty file.
+
+mkdir my_project
+# Create one folder.
+
+mkdir -p project/src project/include project/build
+# Create nested folders in one command.
+
+cp file.txt backup_file.txt
+# Copy a file.
+
+cp -r source_folder backup_folder
+# Copy folder recursively.
+
+mv oldname.txt newname.txt
+# Rename file.
+
+mv file.txt /path/to/destination/
+# Move file.
+
+mv folder1 /path/to/destination/
+# Move folder.
+
+rm file.txt
+# Delete file.
+
+rm -r folder_name
+# Delete folder recursively.
+
+rm -rf folder_name
+# Force delete folder and contents. Use carefully.
+
+rmdir empty_folder
+# Remove empty folder only.
+
+--------------------------------------------------------------------
+3) VIEW AND EDIT FILES
+--------------------------------------------------------------------
+cat file.txt
+# Print whole file.
+
+less file.txt
+# View file page by page.
+
+head -20 file.txt
+# Show first 20 lines.
+
+tail -20 file.txt
+# Show last 20 lines.
+
+tail -f logfile.log
+# Follow log in real time.
+
+nano file.txt
+# Open file in nano editor.
+
+vim file.txt
+# Open file in vim editor.
+
+gedit file.txt
+# Open file in GUI text editor if desktop environment is installed.
+
+--------------------------------------------------------------------
+4) SEARCHING
+--------------------------------------------------------------------
+grep "text" file.txt
+# Search text inside file.
+
+grep -rn "main" ./src
+# Recursive search in folder with line numbers.
+
+find . -name "*.c"
+# Find all .c files from current directory.
+
+find . -type f -name "*.service"
+# Find all systemd service files.
+
+which python3
+# Show location of python3 binary.
+
+whereis gcc
+# Show binary/source/man locations.
+
+locate libasound
+# Quickly search indexed file database.
+
+--------------------------------------------------------------------
+5) FILE PERMISSIONS AND OWNERSHIP
+--------------------------------------------------------------------
+ls -l
+# View file permissions.
+
+chmod +x run.sh
+# Make shell script executable.
+
+chmod 644 file.txt
+# Owner read/write, group read, others read.
+
+chmod 755 run.sh
+# Owner full, others read/execute.
+
+chown user:user file.txt
+# Change file owner and group.
+
+sudo chown -R $USER:$USER my_project
+# Change owner of folder recursively to current user.
+
+sudo
+# Run a command with superuser privileges.
+
+--------------------------------------------------------------------
+6) USER, SYSTEM, AND OS INFO
+--------------------------------------------------------------------
+whoami
+# Show current user.
+
+id
+# Show user ID and groups.
+
+uname -a
+# Show kernel/system information.
+
+hostname
+# Show machine name.
+
+hostname -I
+# Show IP addresses.
+
+cat /etc/os-release
+# Show Linux distribution version.
+
+uptime
+# Show how long system has been running.
+
+free -h
+# Show RAM usage.
+
+df -h
+# Show disk usage.
+
+du -sh .
+# Show current folder size.
+
+lsblk
+# Show block devices/disks.
+
+mount
+# Show mounted filesystems.
+
+--------------------------------------------------------------------
+7) PROCESS MANAGEMENT
+--------------------------------------------------------------------
+ps aux
+# Show running processes.
+
+ps aux | grep python
+# Search running python processes.
+
+top
+# Live process viewer.
+
+htop
+# Better interactive process viewer if installed.
+
+kill PID
+# Terminate process by PID.
+
+kill -9 PID
+# Force kill process.
+
+pkill python3
+# Kill process by name.
+
+jobs
+# Show background jobs in current shell.
+
+bg
+# Resume job in background.
+
+fg
+# Bring job to foreground.
+
+--------------------------------------------------------------------
+8) NETWORK COMMANDS
+--------------------------------------------------------------------
+ip a
+# Show network interfaces and IP addresses.
+
+ip link
+# Show interfaces.
+
+ping 8.8.8.8
+# Check basic internet connectivity.
+
+ping google.com
+# Check DNS and internet.
+
+curl http://example.com
+# Fetch data from URL.
+
+wget http://example.com/file.zip
+# Download file.
+
+ssh user@192.168.1.10
+# Connect to remote machine via SSH.
+
+scp file.txt user@192.168.1.10:/home/user/
+# Copy file to remote system over SSH.
+
+rsync -avh src/ dst/
+# Sync files/folders efficiently.
+
+ss -tulpn
+# Show listening ports and related processes.
+
+nmcli dev status
+# Show NetworkManager device status.
+
+nmcli con show
+# Show saved network connections.
+
+--------------------------------------------------------------------
+9) PACKAGE MANAGEMENT (DEBIAN/UBUNTU)
+--------------------------------------------------------------------
+sudo apt update
+# Refresh package list.
+
+sudo apt upgrade -y
+# Upgrade installed packages.
+
+sudo apt install build-essential git python3 python3-pip -y
+# Install common development tools.
+
+sudo apt remove package_name
+# Remove a package.
+
+sudo apt autoremove -y
+# Remove no longer needed packages.
+
+apt list --installed | less
+# Show installed packages.
+
+--------------------------------------------------------------------
+10) GIT BASICS
+--------------------------------------------------------------------
+git clone <repo_url>
+# Clone repository.
+
+git status
+# Show changed files.
+
+git branch
+# Show local branches.
+
+git checkout -b my_branch
+# Create and switch to new branch.
+
+git pull
+# Pull latest changes.
+
+git add .
+# Stage all changes.
+
+git commit -m "my update"
+# Commit staged changes.
+
+git push origin my_branch
+# Push branch to remote.
+
+git log --oneline --graph --all
+# Compact commit history.
+
+--------------------------------------------------------------------
+11) GCC / C / C++ BUILD COMMANDS
+--------------------------------------------------------------------
+gcc main.c -o app
+# Compile simple C file.
+
+gcc main.c utils.c -o app
+# Compile multiple C files.
+
+gcc -Wall -Wextra main.c -o app
+# Compile with warnings enabled.
+
+gcc -g main.c -o app
+# Compile with debug symbols.
+
+gcc -c main.c -o main.o
+# Compile only to object file.
+
+gcc main.o utils.o -o app
+# Link object files to executable.
+
+g++ main.cpp -o app
+# Compile simple C++ file.
+
+make
+# Build project using Makefile.
+
+make clean
+# Remove build artifacts if Makefile supports it.
+
+//////compile the with gcc if use lasound
+gcc main.c -o app -lasound -lm
+
+--------------------------------------------------------------------
+12) PYTHON BASICS
+--------------------------------------------------------------------
+python3 script.py
+# Run Python file.
+
+python3 -m venv venv
+# Create Python virtual environment.
+
+source venv/bin/activate
+# Activate virtual environment.
+
+pip install -r requirements.txt
+# Install dependencies from requirements file.
+
+pip install package_name
+# Install one Python package.
+
+deactivate
+# Exit virtual environment.
+
+--------------------------------------------------------------------
+13) SHELL SCRIPT BASICS
+--------------------------------------------------------------------
+nano run_python.sh
+# Create/edit shell script.
+
+Example shell script:
+#!/bin/bash
+cd /home/user/my_project
+python3 main.py
+# Simple shell script to move to project directory and run Python.
+
+chmod +x run_python.sh
+# Make shell script executable.
+
+./run_python.sh
+# Run script from current directory.
+
+bash run_python.sh
+# Run script even if not executable.
+
+--------------------------------------------------------------------
+14) BETTER BASH FILE TO RUN PYTHON
+--------------------------------------------------------------------
+Example: run_app.sh
+#!/bin/bash
+set -e
+cd /home/user/my_project
+source venv/bin/activate
+python3 main.py >> app.log 2>&1
+
+# set -e = stop on first error.
+# >> app.log = append output to log.
+# 2>&1 = redirect errors also to same log.
+
+Make executable:
+chmod +x run_app.sh
+
+Run manually:
+./run_app.sh
+
+--------------------------------------------------------------------
+15) SYSTEMD SERVICE BASICS
+--------------------------------------------------------------------
+Check status:
+systemctl status myapp.service
+# Show service state.
+
+Start service:
+sudo systemctl start myapp.service
+# Start service now.
+
+Stop service:
+sudo systemctl stop myapp.service
+# Stop service now.
+
+Restart service:
+sudo systemctl restart myapp.service
+# Restart service.
+
+Enable service:
+sudo systemctl enable myapp.service
+# Start automatically at boot.
+
+Disable service:
+sudo systemctl disable myapp.service
+# Stop auto-start at boot.
+
+Reload service files:
+sudo systemctl daemon-reload
+# Re-read systemd unit files after editing service.
+
+View logs:
+journalctl -u myapp.service -n 100
+# Show last 100 lines of service log.
+
+Follow logs live:
+journalctl -u myapp.service -f
+# Live log output.
+
+List failed services:
+systemctl --failed
+# Show failed services.
+
+--------------------------------------------------------------------
+16) EXAMPLE SYSTEMD SERVICE FOR PYTHON APP
+--------------------------------------------------------------------
+Create service file:
+sudo nano /etc/systemd/system/myapp.service
+
+Example content:
+[Unit]
+Description=My Python App
+After=network.target
+
+[Service]
+Type=simple
+User=user
+WorkingDirectory=/home/user/my_project
+ExecStart=/home/user/my_project/run_app.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+Then run:
+sudo systemctl daemon-reload
+sudo systemctl enable myapp.service
+sudo systemctl start myapp.service
+systemctl status myapp.service
+
+--------------------------------------------------------------------
+17) JOURNAL AND LOGS
+--------------------------------------------------------------------
+journalctl -xe
+# Show recent system errors.
+
+journalctl -b
+# Show logs from current boot.
+
+dmesg | tail -50
+# Show recent kernel messages.
+
+dmesg | grep -i usb
+# Search kernel USB messages.
+
+dmesg | grep -i i2c
+# Search kernel I2C messages.
+
+dmesg | grep -i spi
+# Search kernel SPI messages.
+
+dmesg | grep -i snd
+# Search sound/ALSA messages.
+
+--------------------------------------------------------------------
+18) USB COMMANDS
+--------------------------------------------------------------------
+lsusb
+# List connected USB devices.
+
+lsusb -t
+# Show USB tree view.
+
+sudo dmesg | grep -i usb
+# Show USB-related kernel messages.
+
+usb-devices
+# Detailed USB info.
+
+--------------------------------------------------------------------
+19) ALSA / AUDIO COMMANDS
+--------------------------------------------------------------------
+aplay -l
+# List playback sound devices.
+
+arecord -l
+# List recording devices.
+
+aplay /usr/share/sounds/alsa/Front_Center.wav
+# Test speaker output.
+
+arecord -d 5 test.wav
+# Record 5 seconds of audio.
+
+speaker-test -c 2
+# Stereo audio test.
+
+alsamixer
+# Open mixer controls.
+
+amixer controls
+# List ALSA mixer controls.
+
+amixer scontrols
+# List simple mixer controls.
+
+cat /proc/asound/cards
+# Show ALSA cards.
+
+cat /proc/asound/devices
+# Show ALSA devices.
+
+sudo apt install alsa-utils -y
+# Install ALSA tools.
+
+sudo apt install --reinstall alsa-utils libasound2 -y
+# Reinstall ALSA user-space packages.
+
+sudo alsa force-reload
+# Reload ALSA on systems that support it.
+
+--------------------------------------------------------------------
+20) CHECKING KERNEL MODULES / DRIVERS
+--------------------------------------------------------------------
+lsmod
+# List loaded kernel modules.
+
+lsmod | grep snd
+# Check sound-related modules.
+
+lsmod | grep i2c
+# Check I2C-related modules.
+
+lsmod | grep spi
+# Check SPI-related modules.
+
+modinfo snd_bcm2835
+# Show module information.
+
+sudo modprobe i2c-dev
+# Load I2C device module.
+
+sudo modprobe spi_bcm2835
+# Load SPI module on Raspberry Pi.
+
+sudo modprobe snd_bcm2835
+# Load Pi sound driver if available.
+
+--------------------------------------------------------------------
+21) RASPBERRY PI CONFIG / INTERFACES
+--------------------------------------------------------------------
+sudo raspi-config
+# Open Raspberry Pi configuration tool.
+
+In raspi-config you can enable:
+# I2C
+# SPI
+# SSH
+# Audio options (depending on OS)
+# Interface settings
+
+Check config file:
+sudo nano /boot/firmware/config.txt
+# Raspberry Pi OS newer path.
+
+Alternative older path:
+sudo nano /boot/config.txt
+# Raspberry Pi OS older path.
+
+View current config:
+grep -v '^#' /boot/firmware/config.txt | sed '/^$/d'
+# Show non-comment active lines only.
+
+Important common config lines:
+dtparam=i2c_arm=on
+# Enable I2C.
+
+dtparam=spi=on
+# Enable SPI.
+
+dtoverlay=hifiberry-dac
+# Example I2S DAC overlay.
+
+dtoverlay=i2s-mmap
+# Example depending on use case/OS.
+
+dtparam=audio=off
+# Disable onboard audio if using external DAC overlay and needed.
+
+Reboot after config change:
+sudo reboot
+# Apply changes.
+
+--------------------------------------------------------------------
+22) CHECK I2C
+--------------------------------------------------------------------
+ls /dev/i2c-*
+# Show I2C device nodes.
+
+sudo apt install i2c-tools -y
+# Install I2C utilities.
+
+sudo i2cdetect -y 1
+# Scan I2C bus 1 for devices.
+
+i2cdetect -l
+# List I2C busses.
+
+sudo i2cget -y 1 0x68 0x00
+# Read one register from I2C device example.
+
+sudo i2cset -y 1 0x68 0x6B 0x00
+# Write one register example.
+
+--------------------------------------------------------------------
+23) CHECK SPI
+--------------------------------------------------------------------
+ls /dev/spidev*
+# Show SPI device nodes.
+
+sudo apt install spi-tools -y
+# Install SPI utilities if available in repo.
+
+spidev_test -D /dev/spidev10.0
+or
+spi-config /dev/spidev10.0
+# Run SPI test utility if installed/built.
+
+--------------------------------------------------------------------
+24) CHECK I2S / AUDIO INTERFACE
+--------------------------------------------------------------------
+# I2S usually appears through the audio driver/overlay rather than a simple /dev/i2s file.
+# Typical checks are:
+
+aplay -l
+# See if I2S sound card appears.
+
+cat /proc/asound/cards
+# Confirm ALSA sees the I2S audio card.
+
+dmesg | grep -i -e i2s -e asoc -e snd
+# Look for I2S / ASoC / sound driver messages.
+
+grep -i "dtoverlay\|dtparam" /boot/firmware/config.txt
+# Check Pi overlay/audio settings.
+
+£pinout check
+raspi-gpio get 18 19 21
+
+
+--------------------------------------------------------------------
+25) GPIO QUICK CHECK (Raspberry Pi)
+--------------------------------------------------------------------
+pinctrl get 2
+# Show state of GPIO2 on newer Raspberry Pi OS.
+
+raspi-gpio get
+# Show GPIO states on systems with raspi-gpio.
+
+--------------------------------------------------------------------
+26) SERVICES AT BOOT / STARTUP FILES
+--------------------------------------------------------------------
+systemctl list-unit-files --type=service
+# List all service unit files.
+
+systemctl list-units --type=service
+# List currently loaded services.
+
+sudo systemctl edit myapp.service
+# Create systemd override file.
+
+sudo systemctl cat myapp.service
+# Print service file and overrides.
+
+--------------------------------------------------------------------
+27) FILE TRANSFER / ARCHIVE
+--------------------------------------------------------------------
+tar -czvf backup.tar.gz my_project/
+# Compress folder into tar.gz.
+
+tar -xzvf backup.tar.gz
+# Extract tar.gz file.
+
+zip -r backup.zip my_project/
+# Create zip archive.
+
+unzip backup.zip
+# Extract zip archive.
+
+--------------------------------------------------------------------
+28) ENVIRONMENT VARIABLES
+--------------------------------------------------------------------
+env
+# Show environment variables.
+
+echo $PATH
+# Show PATH variable.
+
+export MY_VAR=value
+# Set variable for current shell.
+
+nano ~/.bashrc
+# Edit bash startup file.
+
+source ~/.bashrc
+# Reload bashrc without logout.
+
+--------------------------------------------------------------------
+29) COMMON PROJECT SETUP COMMANDS
+--------------------------------------------------------------------
+mkdir -p ~/projects/my_app
+# Create project workspace.
+
+cd ~/projects/my_app
+# Enter project folder.
+
+git clone <repo_url> .
+# Clone directly into current folder.
+
+python3 -m venv venv
+# Create Python environment.
+
+source venv/bin/activate
+# Activate environment.
+
+pip install -r requirements.txt
+# Install project dependencies.
+
+nano README.md
+# Start project notes.
+
+--------------------------------------------------------------------
+30) CHECKING OPEN FILES / PORTS
+--------------------------------------------------------------------
+lsof
+# List open files.
+
+lsof -i :5000
+# Check what process uses port 5000.
+
+fuser -k 5000/tcp
+# Kill process using TCP port 5000.
+
+--------------------------------------------------------------------
+31) CRON BASICS (OPTIONAL)
+--------------------------------------------------------------------
+crontab -e
+# Edit user cron jobs.
+
+crontab -l
+# List current cron jobs.
+
+Example:
+*/5 * * * * /home/user/my_project/run_app.sh
+# Run script every 5 minutes.
+
+--------------------------------------------------------------------
+32) CHATGPT-ASSISTED LINUX WORKFLOW
+--------------------------------------------------------------------
+# Good workflow when using ChatGPT for a Linux project:
+
+1. Ask for folder structure.
+# Example: src/, include/, scripts/, service/, logs/, docs/
+
+2. Ask for bash script.
+# Example: run_app.sh, install_deps.sh, backup.sh
+
+3. Ask for systemd service.
+# Example: myapp.service for auto-start.
+
+4. Ask for troubleshooting commands.
+# Example: journalctl, dmesg, systemctl status, lsmod
+
+5. Ask for exact command explanation before running as sudo.
+# Helps avoid system damage.
+
+6. Save all working commands in this workbook.
+# Keep known-good commands for future reuse.
+
+--------------------------------------------------------------------
+33) RECOMMENDED FOLDER STRUCTURE FOR A SMALL LINUX PROJECT
+--------------------------------------------------------------------
+my_project/
+├── src/
+# Source code.
+├── include/
+# Header files.
+├── scripts/
+# Bash helper scripts.
+├── service/
+# systemd service files.
+├── logs/
+# Log files.
+├── build/
+# Compiled output.
+├── docs/
+# Notes and documentation.
+├── venv/
+# Python virtual environment if used.
+└── README.md
+# Project instructions.
+
+--------------------------------------------------------------------
+34) QUICK START EXAMPLE FOR A PYTHON PROJECT
+--------------------------------------------------------------------
+mkdir -p ~/projects/demo_app/scripts ~/projects/demo_app/logs
+cd ~/projects/demo_app
+python3 -m venv venv
+source venv/bin/activate
+pip install flask
+nano app.py
+# Create your python file.
+
+nano run_app.sh
+# Add script content:
+#!/bin/bash
+cd /home/user/projects/demo_app
+source venv/bin/activate
+python3 app.py >> logs/app.log 2>&1
+
+chmod +x run_app.sh
+./run_app.sh
+# Test manually first.
+
+sudo nano /etc/systemd/system/demo_app.service
+# Add service file.
+
+sudo systemctl daemon-reload
+sudo systemctl enable demo_app.service
+sudo systemctl start demo_app.service
+sudo systemctl status demo_app.service
+journalctl -u demo_app.service -f
+# Verify service.
+
+--------------------------------------------------------------------
+35) SAFE HABITS
+--------------------------------------------------------------------
+# Use pwd before rm -rf.
+# Test scripts manually before putting them in systemd.
+# Keep backup of config.txt and service files.
+# Use journalctl after every service change.
+# Use git for your project files.
+# Use comments in scripts and this workbook.
+# Do not edit /boot or /etc files blindly without backup.
+
+Backup examples:
+sudo cp /boot/firmware/config.txt /boot/firmware/config.txt.bak
+# Backup Pi config.
+
+sudo cp /etc/systemd/system/myapp.service /etc/systemd/system/myapp.service.bak
+# Backup service file.
+
+--------------------------------------------------------------------
+36) VERY COMMON TROUBLESHOOTING COMMANDS
+--------------------------------------------------------------------
+systemctl status myapp.service
+# Check if service failed.
+
+journalctl -u myapp.service -n 50 --no-pager
+# See last 50 service logs.
+
+python3 main.py
+# Run app manually to catch direct errors.
+
+chmod +x run_app.sh
+# Fix script permission issue.
+
+which python3
+# Confirm python path.
+
+ls -l /home/user/my_project/run_app.sh
+# Confirm file exists and is executable.
+
+sudo systemctl daemon-reload
+# Needed after editing service file.
+
+sudo reboot
+# Reboot when interface/config changes need full restart.
+
+--------------------------------------------------------------------
+37) OPTIONAL ALIASES FOR FASTER WORK
+--------------------------------------------------------------------
+nano ~/.bashrc
+# Add custom aliases.
+
+Example aliases:
+alias ll='ls -lah'
+alias gs='git status'
+alias jc='journalctl -xe'
+alias mylogs='journalctl -u myapp.service -f'
+
+source ~/.bashrc
+# Reload aliases.
+
+--------------------------------------------------------------------
+38) FINAL NOTE
+--------------------------------------------------------------------
+This workbook is a strong starting point, but some commands depend on:
+# Linux distribution
+# Raspberry Pi model
+# Whether the project is C, C++, Python, or mixed
+# Whether audio/I2S is onboard or through an external DAC overlay
+
+For hardware interfaces like I2S, SPI, I2C, and audio, the exact enable/config steps can change by board and OS image.
