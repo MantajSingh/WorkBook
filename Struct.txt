@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+typedef struct
+{
+    int id;
+    int adc_raw;
+    float voltage;
+} mystruct;
+
+int main()
+{
+    mystruct sensors[3]; // 3 is number of sensor count from 1 to 3
+    mystruct *ptr;
+
+    for(int i = 0; i < 3; i++)    //less then 3 means 3 time start from 0
+    {
+        ptr = &sensors[i];   // pointer points to current sensor 0 , 1, 2 this is address not count
+
+        ptr->id = i + 1;     // increment sensor ID 
+        ptr->adc_raw = 2000 + i * 500;
+        ptr->voltage = (float)ptr->adc_raw * 3.3 / 4095;
+    }
+
+    printf("Sensor Data:\n");
+
+    for(int i = 0; i < 3; i++)
+    {
+        ptr = &sensors[i];
+
+        printf("Sensor ID: %d\n", ptr->id);
+        printf("ADC Raw: %d\n", ptr->adc_raw);
+        printf("Voltage: %.2f\n", ptr->voltage);
+        printf("\n");
+    }
+
+    return 0;
+}

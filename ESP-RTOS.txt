@@ -1,0 +1,185 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "esp_log.h"
+
+static const char *TAG = "CONFIG";
+
+/* Task handles */
+TaskHandle_t sensor_a_handle = NULL;
+TaskHandle_t sensor_b_handle = NULL;
+
+/* Config values read from file */
+bool sensor_a = false;
+bool sensor_b = false;
+
+/* Flags controlling tasks */
+volatile bool flag_a = false;
+volatile bool flag_b = false;
+
+
+/* --------------------------
+   Read configuration file
+--------------------------*/
+void read_config_file()
+{
+    FILE *f = fopen("/spiffs/config.txt", "r");
+    if (!f) {
+        ESP_LOGE(TAG, "Failed to open config file");
+        return;
+    }
+
+    char line[64];
+
+    while (fgets(line, sizeof(line), f)) {
+
+        if (strstr(line, "sensor_a=true")) {
+            sensor_a = true;
+        }
+
+        if (strstr(line, "sensor_a=false")) {
+            sensor_a = false;
+        }
+
+        if (strstr(line, "sensor_b=true")) {
+            sensor_b = true;
+        }
+
+        if (strstr(line, "sensor_b=false")) {
+            sensor_b = false;
+        }
+    }
+
+    fclose(f);
+
+    ESP_LOGI(TAG,"Config loaded A:%d B:%d",sensor_a,sensor_b);
+}
+
+
+/* --------------------------
+   Sensor A read function
+--------------------------*/
+void sensor_a_read()
+{
+    ESP_LOGI("SENSOR_A","Reading Sensor A...");
+}
+
+
+/* --------------------------
+   Sensor B read function
+--------------------------*/
+void sensor_b_read()
+{
+    ESP_LOGI("SENSOR_B","Reading Sensor B...");
+}
+
+
+/* --------------------------
+   Sensor A task
+--------------------------*/
+void sensor_a_task(void *arg)
+{
+    ESP_LOGI("SENSOR_A","Task started");
+
+    while(flag_a)
+    {
+        sensor_a_read();
+
+        for(int i=0;i<10;i++){
+            if(!flag_a) break;
+            vTaskDelay(pdMS_TO_TICKS(100));
+        }
+    }
+
+    ESP_LOGI("SENSOR_A","Task stopping");
+    sensor_a_handle = NULL;
+    vTaskDelete(NULL);
+}
+
+
+/* --------------------------
+   Sensor B task
+--------------------------*/
+void sensor_b_task(void *arg)
+{
+    ESP_LOGI("SENSOR_B","Task started");
+
+    while(flag_b)
+    {
+        sensor_b_read();
+
+        for(int i=0;i<10;i++){
+            if(!flag_b) break;
+            vTaskDelay(pdMS_TO_TICKS(100));
+        }
+    }
+
+    ESP_LOGI("SENSOR_B","Task stopping");
+    sensor_b_handle = NULL;
+    vTaskDelete(NULL);
+}
+
+
+/* --------------------------
+   Manager task
+--------------------------*/
+void config_monitor_task(void *arg)
+{
+    while(1)
+    {
+        read_config_file();
+
+        /* SENSOR A CONTROL */
+        if(sensor_a){
+            if(sensor_a_handle == NULL){
+                flag_a = true;
+                xTaskCreate(sensor_a_task,"sensor_a_task",4096,NULL,5,&sensor_a_handle);
+                ESP_LOGI(TAG,"Sensor A task created");
+            }
+        }
+        else{
+            if(sensor_a_handle != NULL){
+                flag_a = false;
+                ESP_LOGI(TAG,"Sensor A stopping");
+            }
+        }
+
+
+        /* SENSOR B CONTROL */
+        if(sensor_b){
+            if(sensor_b_handle == NULL){
+                flag_b = true;
+                xTaskCreate(sensor_b_task,"sensor_b_task",4096,NULL,5,&sensor_b_handle);
+                ESP_LOGI(TAG,"Sensor B task created");
+            }
+        }
+        else{
+            if(sensor_b_handle != NULL){
+                flag_b = false;
+                ESP_LOGI(TAG,"Sensor B stopping");
+            }
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(10000));
+    }
+}
+
+
+/* --------------------------
+   Main
+--------------------------*/
+void app_main()
+{
+    ESP_LOGI(TAG,"System starting");
+
+    xTaskCreate(
+        config_monitor_task,
+        "config_monitor",
+        4096,
+        NULL,
+        4,
+        NULL
+    );
+}
