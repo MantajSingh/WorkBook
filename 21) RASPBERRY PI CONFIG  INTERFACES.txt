@@ -1,0 +1,41 @@
+sudo raspi-config
+# Open Raspberry Pi configuration tool.
+
+In raspi-config you can enable:
+# I2C
+# SPI
+# SSH
+# Audio options (depending on OS)
+# Interface settings
+
+Check config file:
+sudo nano /boot/firmware/config.txt
+# Raspberry Pi OS newer path.
+
+Alternative older path:
+sudo nano /boot/config.txt
+# Raspberry Pi OS older path.
+
+View current config:
+grep -v '^#' /boot/firmware/config.txt | sed '/^$/d'
+# Show non-comment active lines only.
+
+Important common config lines:
+dtparam=i2c_arm=on
+# Enable I2C.
+
+dtparam=spi=on
+# Enable SPI.
+
+dtoverlay=hifiberry-dac
+# Example I2S DAC overlay.
+
+dtoverlay=i2s-mmap
+# Example depending on use case/OS.
+
+dtparam=audio=off
+# Disable onboard audio if using external DAC overlay and needed.
+
+Reboot after config change:
+sudo reboot
+# Apply changes.

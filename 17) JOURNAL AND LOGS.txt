@@ -1,0 +1,20 @@
+journalctl -xe
+# Show recent system errors.
+
+journalctl -b
+# Show logs from current boot.
+
+dmesg | tail -50
+# Show recent kernel messages.
+
+dmesg | grep -i usb
+# Search kernel USB messages.
+
+dmesg | grep -i i2c
+# Search kernel I2C messages.
+
+dmesg | grep -i spi
+# Search kernel SPI messages.
+
+dmesg | grep -i snd
+# Search sound/ALSA messages.

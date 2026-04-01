@@ -1,0 +1,11 @@
+systemctl list-unit-files --type=service
+# List all service unit files.
+
+systemctl list-units --type=service
+# List currently loaded services.
+
+sudo systemctl edit myapp.service
+# Create systemd override file.
+
+sudo systemctl cat myapp.service
+# Print service file and overrides.

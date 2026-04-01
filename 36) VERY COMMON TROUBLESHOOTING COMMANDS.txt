@@ -1,0 +1,23 @@
+systemctl status myapp.service
+# Check if service failed.
+
+journalctl -u myapp.service -n 50 --no-pager
+# See last 50 service logs.
+
+python3 main.py
+# Run app manually to catch direct errors.
+
+chmod +x run_app.sh
+# Fix script permission issue.
+
+which python3
+# Confirm python path.
+
+ls -l /home/user/my_project/run_app.sh
+# Confirm file exists and is executable.
+
+sudo systemctl daemon-reload
+# Needed after editing service file.
+
+sudo reboot
+# Reboot when interface/config changes need full restart.

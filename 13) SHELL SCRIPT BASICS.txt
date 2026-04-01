@@ -1,0 +1,17 @@
+nano run_python.sh
+# Create/edit shell script.
+
+Example shell script:
+#!/bin/bash
+cd /home/user/my_project
+python3 main.py
+# Simple shell script to move to project directory and run Python.
+
+chmod +x run_python.sh
+# Make shell script executable.
+
+./run_python.sh
+# Run script from current directory.
+
+bash run_python.sh
+# Run script even if not executable.

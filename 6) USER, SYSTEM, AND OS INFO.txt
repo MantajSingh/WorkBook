@@ -1,0 +1,35 @@
+whoami
+# Show current user.
+
+id
+# Show user ID and groups.
+
+uname -a
+# Show kernel/system information.
+
+hostname
+# Show machine name.
+
+hostname -I
+# Show IP addresses.
+
+cat /etc/os-release
+# Show Linux distribution version.
+
+uptime
+# Show how long system has been running.
+
+free -h
+# Show RAM usage.
+
+df -h
+# Show disk usage.
+
+du -sh .
+# Show current folder size.
+
+lsblk
+# Show block devices/disks.
+
+mount
+# Show mounted filesystems.

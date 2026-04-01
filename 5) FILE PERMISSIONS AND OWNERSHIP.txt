@@ -1,0 +1,20 @@
+ls -l
+# View file permissions.
+
+chmod +x run.sh
+# Make shell script executable.
+
+chmod 644 file.txt
+# Owner read/write, group read, others read.
+
+chmod 755 run.sh
+# Owner full, others read/execute.
+
+chown user:user file.txt
+# Change file owner and group.
+
+sudo chown -R $USER:$USER my_project
+# Change owner of folder recursively to current user.
+
+sudo
+# Run a command with superuser privileges.

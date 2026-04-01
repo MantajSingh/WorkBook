@@ -1,0 +1,5 @@
+pinctrl get 2
+# Show state of GPIO2 on newer Raspberry Pi OS.
+
+raspi-gpio get
+# Show GPIO states on systems with raspi-gpio.

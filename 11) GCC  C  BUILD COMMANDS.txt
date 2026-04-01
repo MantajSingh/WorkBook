@@ -1,0 +1,29 @@
+gcc main.c -o app
+# Compile simple C file.
+
+gcc main.c utils.c -o app
+# Compile multiple C files.
+
+gcc -Wall -Wextra main.c -o app
+# Compile with warnings enabled.
+
+gcc -g main.c -o app
+# Compile with debug symbols.
+
+gcc -c main.c -o main.o
+# Compile only to object file.
+
+gcc main.o utils.o -o app
+# Link object files to executable.
+
+g++ main.cpp -o app
+# Compile simple C++ file.
+
+make
+# Build project using Makefile.
+
+make clean
+# Remove build artifacts if Makefile supports it.
+
+//////compile the with gcc if use lasound
+gcc main.c -o app -lasound -lm

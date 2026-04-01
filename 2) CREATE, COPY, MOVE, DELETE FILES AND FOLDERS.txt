@@ -1,0 +1,35 @@
+touch file.txt
+# Create an empty file.
+
+mkdir my_project
+# Create one folder.
+
+mkdir -p project/src project/include project/build
+# Create nested folders in one command.
+
+cp file.txt backup_file.txt
+# Copy a file.
+
+cp -r source_folder backup_folder
+# Copy folder recursively.
+
+mv oldname.txt newname.txt
+# Rename file.
+
+mv file.txt /path/to/destination/
+# Move file.
+
+mv folder1 /path/to/destination/
+# Move folder.
+
+rm file.txt
+# Delete file.
+
+rm -r folder_name
+# Delete folder recursively.
+
+rm -rf folder_name
+# Force delete folder and contents. Use carefully.
+
+rmdir empty_folder
+# Remove empty folder only.

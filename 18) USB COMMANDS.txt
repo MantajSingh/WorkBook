@@ -1,0 +1,11 @@
+lsusb
+# List connected USB devices.
+
+lsusb -t
+# Show USB tree view.
+
+sudo dmesg | grep -i usb
+# Show USB-related kernel messages.
+
+usb-devices
+# Detailed USB info.

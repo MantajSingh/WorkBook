@@ -1,0 +1,17 @@
+python3 script.py
+# Run Python file.
+
+python3 -m venv venv
+# Create Python virtual environment.
+
+source venv/bin/activate
+# Activate virtual environment.
+
+pip install -r requirements.txt
+# Install dependencies from requirements file.
+
+pip install package_name
+# Install one Python package.
+
+deactivate
+# Exit virtual environment.

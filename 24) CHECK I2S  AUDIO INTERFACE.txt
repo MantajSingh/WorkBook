@@ -1,0 +1,17 @@
+# I2S usually appears through the audio driver/overlay rather than a simple /dev/i2s file.
+# Typical checks are:
+
+aplay -l
+# See if I2S sound card appears.
+
+cat /proc/asound/cards
+# Confirm ALSA sees the I2S audio card.
+
+dmesg | grep -i -e i2s -e asoc -e snd
+# Look for I2S / ASoC / sound driver messages.
+
+grep -i "dtoverlay\|dtparam" /boot/firmware/config.txt
+# Check Pi overlay/audio settings.
+
+£pinout check
+raspi-gpio get 18 19 21

@@ -1,0 +1,17 @@
+ls /dev/i2c-*
+# Show I2C device nodes.
+
+sudo apt install i2c-tools -y
+# Install I2C utilities.
+
+sudo i2cdetect -y 1
+# Scan I2C bus 1 for devices.
+
+i2cdetect -l
+# List I2C busses.
+
+sudo i2cget -y 1 0x68 0x00
+# Read one register from I2C device example.
+
+sudo i2cset -y 1 0x68 0x6B 0x00
+# Write one register example.

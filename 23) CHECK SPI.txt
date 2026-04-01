@@ -1,0 +1,10 @@
+ls /dev/spidev*
+# Show SPI device nodes.
+
+sudo apt install spi-tools -y
+# Install SPI utilities if available in repo.
+
+spidev_test -D /dev/spidev10.0
+or
+spi-config /dev/spidev10.0
+# Run SPI test utility if installed/built.

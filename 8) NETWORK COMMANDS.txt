@@ -1,0 +1,95 @@
+ip a
+# Show network interfaces and IP addresses.
+
+ip link
+# Show interfaces.
+
+ping 8.8.8.8
+# Check basic internet connectivity.
+
+ping google.com
+# Check DNS and internet.
+
+curl http://example.com
+# Fetch data from URL.
+
+wget http://example.com/file.zip
+# Download file.
+
+ssh user@192.168.1.10
+# Connect to remote machine via SSH.
+
+scp file.txt user@192.168.1.10:/home/user/
+# Copy file to remote system over SSH.
+
+rsync -avh src/ dst/
+# Sync files/folders efficiently.
+
+ss -tulpn
+# Show listening ports and related processes.
+
+nmcli dev status
+# Show NetworkManager device status.
+
+nmcli con show
+# Show saved network connections.
+
+
+nmcli device status
+# Check if WiFi interface exists (usually wlan0 on Raspberry Pi)
+
+nmcli radio wifi on
+# Enable WiFi (important on headless Pi)
+
+nmcli device wifi list
+# Scan available WiFi networks
+
+nmcli device wifi connect "SSID" password "PASSWORD"
+# Connect Pi to WiFi (auto-creates profile)
+
+
+nmcli device wifi connect "SSID" password "PASSWORD" ifname wlan0
+# Force connection on wlan0 (recommended for Pi)
+
+
+nmcli connection show
+# Show saved WiFi networks (profiles)
+
+
+nmcli connection up "SSID"
+# Reconnect using saved profile
+
+
+nmcli connection modify "SSID" connection.autoconnect yes
+# Auto-connect on boot
+
+
+nmcli device disconnect wlan0
+# Disconnect WiFi manually
+
+
+nmcli connection delete "SSID"
+# Remove saved WiFi network
+
+
+nmcli device show wlan0
+# Show IP address and details
+
+
+hostname -I
+# Quick way to get Pi IP address
+
+
+sudo systemctl enable NetworkManager
+# Ensure NetworkManager is enabled on Pi (sometimes disabled by default)
+
+
+
+sudo systemctl restart NetworkManager
+# Restart networking if WiFi fails
+
+
+
+
+
+

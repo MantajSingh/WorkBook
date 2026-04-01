@@ -1,0 +1,23 @@
+lsmod
+# List loaded kernel modules.
+
+lsmod | grep snd
+# Check sound-related modules.
+
+lsmod | grep i2c
+# Check I2C-related modules.
+
+lsmod | grep spi
+# Check SPI-related modules.
+
+modinfo snd_bcm2835
+# Show module information.
+
+sudo modprobe i2c-dev
+# Load I2C device module.
+
+sudo modprobe spi_bcm2835
+# Load SPI module on Raspberry Pi.
+
+sudo modprobe snd_bcm2835
+# Load Pi sound driver if available.

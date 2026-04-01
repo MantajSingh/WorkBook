@@ -1,0 +1,28 @@
+mkdir -p ~/projects/demo_app/scripts ~/projects/demo_app/logs
+cd ~/projects/demo_app
+python3 -m venv venv
+source venv/bin/activate
+pip install flask
+nano app.py
+# Create your python file.
+
+nano run_app.sh
+# Add script content:
+#!/bin/bash
+cd /home/user/projects/demo_app
+source venv/bin/activate
+python3 app.py >> logs/app.log 2>&1
+
+chmod +x run_app.sh
+./run_app.sh
+# Test manually first.
+
+sudo nano /etc/systemd/system/demo_app.service
+# Add service file.
+
+sudo systemctl daemon-reload
+sudo systemctl enable demo_app.service
+sudo systemctl start demo_app.service
+sudo systemctl status demo_app.service
+journalctl -u demo_app.service -f
+# Verify service.

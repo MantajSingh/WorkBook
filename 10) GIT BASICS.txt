@@ -1,0 +1,26 @@
+git clone <repo_url>
+# Clone repository.
+
+git status
+# Show changed files.
+
+git branch
+# Show local branches.
+
+git checkout -b my_branch
+# Create and switch to new branch.
+
+git pull
+# Pull latest changes.
+
+git add .
+# Stage all changes.
+
+git commit -m "my update"
+# Commit staged changes.
+
+git push origin my_branch
+# Push branch to remote.
+
+git log --oneline --graph --all
+# Compact commit history.

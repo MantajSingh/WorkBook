@@ -1,0 +1,19 @@
+my_project/
+├── src/
+# Source code.
+├── include/
+# Header files.
+├── scripts/
+# Bash helper scripts.
+├── service/
+# systemd service files.
+├── logs/
+# Log files.
+├── build/
+# Compiled output.
+├── docs/
+# Notes and documentation.
+├── venv/
+# Python virtual environment if used.
+└── README.md
+# Project instructions.

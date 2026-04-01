@@ -1,0 +1,38 @@
+aplay -l
+# List playback sound devices.
+
+arecord -l
+# List recording devices.
+
+aplay /usr/share/sounds/alsa/Front_Center.wav
+# Test speaker output.
+
+arecord -d 5 test.wav
+# Record 5 seconds of audio.
+
+speaker-test -c 2
+# Stereo audio test.
+
+alsamixer
+# Open mixer controls.
+
+amixer controls
+# List ALSA mixer controls.
+
+amixer scontrols
+# List simple mixer controls.
+
+cat /proc/asound/cards
+# Show ALSA cards.
+
+cat /proc/asound/devices
+# Show ALSA devices.
+
+sudo apt install alsa-utils -y
+# Install ALSA tools.
+
+sudo apt install --reinstall alsa-utils libasound2 -y
+# Reinstall ALSA user-space packages.
+
+sudo alsa force-reload
+# Reload ALSA on systems that support it.

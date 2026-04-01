@@ -1,0 +1,24 @@
+Create service file:
+sudo nano /etc/systemd/system/myapp.service
+
+Example content:
+[Unit]
+Description=My Python App
+After=network.target
+
+[Service]
+Type=simple
+User=user
+WorkingDirectory=/home/user/my_project
+ExecStart=/home/user/my_project/run_app.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+Then run:
+sudo systemctl daemon-reload
+sudo systemctl enable myapp.service
+sudo systemctl start myapp.service
+systemctl status myapp.service

@@ -1,0 +1,29 @@
+ps aux
+# Show running processes.
+
+ps aux | grep python
+# Search running python processes.
+
+top
+# Live process viewer.
+
+htop
+# Better interactive process viewer if installed.
+
+kill PID
+# Terminate process by PID.
+
+kill -9 PID
+# Force kill process.
+
+pkill python3
+# Kill process by name.
+
+jobs
+# Show background jobs in current shell.
+
+bg
+# Resume job in background.
+
+fg
+# Bring job to foreground.

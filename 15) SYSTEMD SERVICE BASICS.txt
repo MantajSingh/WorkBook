@@ -1,0 +1,39 @@
+Check status:
+systemctl status myapp.service
+# Show service state.
+
+Start service:
+sudo systemctl start myapp.service
+# Start service now.
+
+Stop service:
+sudo systemctl stop myapp.service
+# Stop service now.
+
+Restart service:
+sudo systemctl restart myapp.service
+# Restart service.
+
+Enable service:
+sudo systemctl enable myapp.service
+# Start automatically at boot.
+
+Disable service:
+sudo systemctl disable myapp.service
+# Stop auto-start at boot.
+
+Reload service files:
+sudo systemctl daemon-reload
+# Re-read systemd unit files after editing service.
+
+View logs:
+journalctl -u myapp.service -n 100
+# Show last 100 lines of service log.
+
+Follow logs live:
+journalctl -u myapp.service -f
+# Live log output.
+
+List failed services:
+systemctl --failed
+# Show failed services.
